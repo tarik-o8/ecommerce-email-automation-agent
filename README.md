@@ -4,7 +4,8 @@ An end-to-end automated customer support agent built with **n8n**, **Groq AI**, 
 
 ## Workflow Architecture
 
-![n8n Workflow Architecture](./workflow.png)
+<img width="1236" height="515" alt="workflow png" src="https://github.com/user-attachments/assets/edaa0e0d-88c0-4b97-893c-078d0af43e19" />
+
 
 ## How It Works
 
