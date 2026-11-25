@@ -1,0 +1,142 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=you are a E-commerce sales sales man. you reply all the customer message.{{ $json.snippet }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        16,
+        -128
+      ],
+      "id": "23f0f3fc-4762-4d6d-9454-468ec8d71ef8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        96,
+        112
+      ],
+      "id": "9ece90f2-a0a9-4284-91a7-b61338b4d414",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "0hcALFLLskzyA5zG",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "maxResults": 5,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -208,
+        -128
+      ],
+      "id": "b1b828ab-5f2a-4bc5-bf23-99e88a93bed9",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "XiNVtcdwJPrMpmLO",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        -128
+      ],
+      "id": "6e9d3059-5d5a-498f-b986-2ff008dc5ce7",
+      "name": "Reply to a message",
+      "webhookId": "1c04c082-3b8d-4260-8d06-c726431fb1dd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "XiNVtcdwJPrMpmLO",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5300c074-4aca-4bb4-aaad-6882629e93a9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d8be2fcbe948b3fc4f04d9487f067e5d66bc3f760cd16de31a4a74f09d75b9b4"
+  },
+  "nodeGroups": [],
+  "id": "qUuYuriqKWbbcjkB",
+  "tags": []
+}
